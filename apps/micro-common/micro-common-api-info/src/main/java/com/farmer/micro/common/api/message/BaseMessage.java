@@ -1,4 +1,4 @@
-package com.farmer.micro.common.message.info;
+package com.farmer.micro.common.api.message;
 
 import java.io.Serializable;
 
