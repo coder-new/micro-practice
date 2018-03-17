@@ -1,5 +1,6 @@
 package com.farmer.micro.download.core;
 
+import com.farmer.micro.download.api.message.ListenerConstants;
 import com.farmer.micro.download.cookie.CookieManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.config.JmsListenerEndpointRegistrar;
+import org.springframework.jms.config.JmsListenerEndpointRegistry;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
@@ -34,6 +37,9 @@ public class RestTemplateHttpClient {
     @Autowired
     private CookieManager cookieManager;
 
+    @Autowired
+    private JmsListenerEndpointRegistry jmsListenerEndpointRegistry;
+
     public String get(String url) {
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -46,6 +52,12 @@ public class RestTemplateHttpClient {
 
         if (200 == statusCodeValue) {
             return body;
+        } else {
+
+            LOGGER.error("download error status code : {}",statusCodeValue);
+
+            jmsListenerEndpointRegistry
+                    .getListenerContainer(ListenerConstants.Id.ID_1).stop();
         }
 
         return null;

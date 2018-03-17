@@ -25,7 +25,10 @@ public class MessageTest {
     @Test
     public void test() {
 
-        activeMqMessageSend.send("test001", Constants.TEST_QUEUE_NAME);
+        for (int i=0;i<3;i++) {
+            activeMqMessageSend.send("test001", Constants.TEST_QUEUE_NAME);
+        }
+
 
         try {
             Thread.sleep(1000*5);
