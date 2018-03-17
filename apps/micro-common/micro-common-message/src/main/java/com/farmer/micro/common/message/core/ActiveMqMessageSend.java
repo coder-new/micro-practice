@@ -19,7 +19,13 @@ public class ActiveMqMessageSend implements ISendMessage{
     private static final Logger LOGGER = LoggerFactory.getLogger(ActiveMqMessageSend.class);
 
     @Autowired
+    private Queue testQueue;
+
+    @Autowired
     private JmsTemplate jmsTemplate;
+
+    @Autowired
+    private Queue messageQueue;
 
     @Autowired
     private Queue downloadQueue;
@@ -36,6 +42,8 @@ public class ActiveMqMessageSend implements ISendMessage{
     @Override
     public void send(String messageStr, String destination) {
 
+        LOGGER.debug("send message : {} to : {}",messageStr,destination);
+
         switch (destination) {
 
             case Constants.SAVE_QUEUE_NAME:
@@ -49,6 +57,9 @@ public class ActiveMqMessageSend implements ISendMessage{
                 break;
             case Constants.BLOGGER_QUEUE_NAME:
                 jmsTemplate.convertAndSend(bloggerQueue,messageStr);
+                break;
+            case Constants.TEST_QUEUE_NAME:
+                jmsTemplate.convertAndSend(testQueue,messageStr);
                 break;
             default:
                 LOGGER.warn("message destination : {} wrong!",destination);

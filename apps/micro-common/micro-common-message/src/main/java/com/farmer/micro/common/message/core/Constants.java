@@ -7,6 +7,8 @@ package com.farmer.micro.common.message.core;
  */
 public abstract class Constants {
 
+    public static final String TEST_QUEUE_NAME = "spider-queue-test";
+
     public static final String QUEUE_NAME = "spider-queue";
 
     public static final String DOWNLOAD_QUEUE_NAME = "spider-download-queue";

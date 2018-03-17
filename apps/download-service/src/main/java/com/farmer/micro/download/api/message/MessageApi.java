@@ -1,6 +1,8 @@
 package com.farmer.micro.download.api.message;
 
-import com.farmer.micro.download.core.Constants;
+import com.farmer.micro.common.message.core.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageApi {
 
-    @JmsListener(destination = Constants.DOWNLOAD_QUEUE_NAME)
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageApi.class);
+
+    @JmsListener(destination = Constants.TEST_QUEUE_NAME)
     public void receive(String messageStr) {
 
-
+        LOGGER.debug("receive message : {}",messageStr);
     }
 }

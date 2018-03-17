@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication(
         scanBasePackages = {
-                "com.farmer.micro.download"})
+                "com.farmer.micro"})
 public class Application {
 
     public static void main(String[] args) {

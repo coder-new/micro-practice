@@ -17,6 +17,13 @@ import javax.jms.Queue;
 public class QueueConfig {
 
     @Bean
+    public Queue testQueue() {
+
+        ActiveMQQueue queue = new ActiveMQQueue(Constants.TEST_QUEUE_NAME);
+        return queue;
+    }
+
+    @Bean
     public Queue messageQueue() {
         ActiveMQQueue queue = new ActiveMQQueue(Constants.QUEUE_NAME);
         return queue;
