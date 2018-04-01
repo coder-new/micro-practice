@@ -18,4 +18,9 @@ public abstract class Constants {
     public static final String SAVE_QUEUE_NAME = "spider-save-queue";
 
     public static final String BLOGGER_QUEUE_NAME = "spider-blogger-queue";
+
+
+    public static final String BLOGGER_TAG_DOWNLOAD_QUEUE = "blogger-tag-download-queue";
+
+    public static final String BLOGGER_TAG_PARSER_QUEUE = "blogger-tag-parser-queue";
 }

@@ -47,20 +47,17 @@ public class RestTemplateHttpClient {
 
         HttpEntity<String> requestEntity = new HttpEntity<>(null, requestHeaders);
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
-        String body = responseEntity.getBody();
-        int statusCodeValue = responseEntity.getStatusCodeValue();
 
-        if (200 == statusCodeValue) {
-            return body;
-        } else {
-
-            LOGGER.error("download error status code : {}",statusCodeValue);
-
-            jmsListenerEndpointRegistry
-                    .getListenerContainer(ListenerConstants.Id.ID_1).stop();
+        int statusCode = responseEntity.getStatusCodeValue();
+        if (404 == statusCode) {
+            LOGGER.error("url : {} 404!",url);
+            return null;
+        } else if (200 != statusCode) {
+            LOGGER.error("request url : {} error : {}!",url,responseEntity.getBody());
+            return null;
         }
 
-        return null;
+        return responseEntity.getBody();
     }
 
     public void asyncGet(String url,CallBackExecute callBackExecute) {
@@ -75,6 +72,8 @@ public class RestTemplateHttpClient {
             @Override
             public void onFailure(Throwable ex) {
                 LOGGER.error("get url : {} error : {}",url, ex.getMessage());
+                jmsListenerEndpointRegistry
+                        .getListenerContainer(ListenerConstants.Id.ID_1).stop();
             }
 
             @Override
@@ -85,6 +84,8 @@ public class RestTemplateHttpClient {
                     callBackExecute.execute(result.getBody());
                 } else {
                     LOGGER.error("get url : {} error,status : {}",url,statusCodeValue);
+                    jmsListenerEndpointRegistry
+                            .getListenerContainer(ListenerConstants.Id.ID_1).stop();
                 }
 
             }

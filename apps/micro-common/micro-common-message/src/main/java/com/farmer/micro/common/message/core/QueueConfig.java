@@ -16,6 +16,20 @@ import javax.jms.Queue;
 @Configuration
 public class QueueConfig {
 
+    @Bean("tagDownloadQueue")
+    public Queue tagDownloadQueue() {
+
+        ActiveMQQueue queue = new ActiveMQQueue(Constants.BLOGGER_TAG_DOWNLOAD_QUEUE);
+        return queue;
+    }
+
+    @Bean("tagParserQueue")
+    public Queue tagParserQueue() {
+
+        ActiveMQQueue queue = new ActiveMQQueue(Constants.BLOGGER_TAG_PARSER_QUEUE);
+        return queue;
+    }
+
     @Bean
     public Queue testQueue() {
 

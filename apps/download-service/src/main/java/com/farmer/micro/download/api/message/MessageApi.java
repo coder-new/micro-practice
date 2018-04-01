@@ -2,9 +2,11 @@ package com.farmer.micro.download.api.message;
 
 import com.farmer.micro.common.api.message.BaseMessage;
 import com.farmer.micro.common.api.message.blogger.relation.BloggerRelationDownloadMessage;
+import com.farmer.micro.common.api.message.blogger.tag.DownTagMessage;
 import com.farmer.micro.common.message.core.Constants;
 import com.farmer.micro.common.message.serialze.SerialzeUtil;
 import com.farmer.micro.download.cnblogs.blogger.relation.BloggerRelationService;
+import com.farmer.micro.download.cnblogs.blogger.tag.DownloadTagService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +30,36 @@ public class MessageApi {
     private BloggerRelationService bloggerRelationService;
 
     @Autowired
+    private DownloadTagService downloadTagService;
+
+    @Autowired
     private SerialzeUtil serialzeUtil;
 
-    @JmsListener(destination = Constants.TEST_QUEUE_NAME,id = ListenerConstants.Id.ID_1)
+//    @JmsListener(destination = Constants.TEST_QUEUE_NAME,id = ListenerConstants.Id.ID_1)
+//    public void receive(String messageStr) {
+//
+//        LOGGER.debug("receive message : {}",messageStr);
+//
+//        try {
+//            BloggerRelationDownloadMessage bloggerRelationDownloadMessage
+//                    = serialzeUtil.serialze(messageStr,BloggerRelationDownloadMessage.class);
+//
+//            bloggerRelationService.handle(bloggerRelationDownloadMessage);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    @JmsListener(destination = Constants.BLOGGER_TAG_DOWNLOAD_QUEUE,id = ListenerConstants.Id.ID_2)
     public void receive(String messageStr) {
 
         LOGGER.debug("receive message : {}",messageStr);
 
         try {
-            BloggerRelationDownloadMessage bloggerRelationDownloadMessage
-                    = serialzeUtil.serialze(messageStr,BloggerRelationDownloadMessage.class);
+            DownTagMessage downTagMessage
+                    = serialzeUtil.serialze(messageStr,DownTagMessage.class);
 
-            bloggerRelationService.handle(bloggerRelationDownloadMessage);
+            downloadTagService.handle(downTagMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }

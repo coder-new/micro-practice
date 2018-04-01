@@ -17,6 +17,7 @@
     <modules>
         <module>micro-common-message</module>
         <module>micro-common-api-info</module>
+        <module>micro-common-util</module>
     </modules>
 
     <properties>
@@ -44,6 +45,7 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

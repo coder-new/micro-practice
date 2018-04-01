@@ -1,5 +1,6 @@
 package com.farmer.micro.download.core;
 
+import com.farmer.micro.common.util.file.FileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,17 @@ public class RestTemplateHttpClientTest {
     @Test
     public void testGet() {
 
-        String url = "https://www.cnblogs.com/NeverCtrl-C/";
+        String bloggerName = "nokiaguy";
+
+        String url = "https://www.cnblogs.com/" + bloggerName + "/tag/";
 
         String body = restTemplateHttpClient.get(url);
 
-        System.out.println(body);
+        writeToFile(body,bloggerName);
+    }
+
+    private void writeToFile(String body,String bloggerName) {
+
+        FileUtil.writeToFile(body,"C:\\Users\\aprim\\tempfile\\" + bloggerName + ".html");
     }
 }

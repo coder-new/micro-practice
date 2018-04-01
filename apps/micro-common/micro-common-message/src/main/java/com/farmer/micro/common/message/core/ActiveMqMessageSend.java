@@ -1,5 +1,8 @@
 package com.farmer.micro.common.message.core;
 
+import com.farmer.micro.common.api.message.BaseMessage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,15 @@ public class ActiveMqMessageSend implements ISendMessage{
     @Autowired
     private Queue bloggerQueue;
 
+    @Autowired
+    private Queue tagDownloadQueue;
+
+    @Autowired
+    private Queue tagParserQueue;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Override
     public void send(String messageStr, String destination) {
 
@@ -61,9 +73,30 @@ public class ActiveMqMessageSend implements ISendMessage{
             case Constants.TEST_QUEUE_NAME:
                 jmsTemplate.convertAndSend(testQueue,messageStr);
                 break;
+            case Constants.BLOGGER_TAG_DOWNLOAD_QUEUE:
+                jmsTemplate.convertAndSend(tagDownloadQueue,messageStr);
+                break;
+            case Constants.BLOGGER_TAG_PARSER_QUEUE:
+                jmsTemplate.convertAndSend(tagParserQueue,messageStr);
+                break;
             default:
                 LOGGER.warn("message destination : {} wrong!",destination);
         }
 
+    }
+
+    @Override
+    public void send(BaseMessage baseMessage, String destination) {
+
+        String messageStr = null;
+        try {
+            messageStr = objectMapper.writeValueAsString(baseMessage);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        if (null != messageStr) {
+            send(messageStr,destination);
+        }
     }
 }

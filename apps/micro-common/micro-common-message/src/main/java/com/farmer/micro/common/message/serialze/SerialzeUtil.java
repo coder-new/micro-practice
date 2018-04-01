@@ -12,6 +12,17 @@ public class SerialzeUtil {
     @Autowired
     private ObjectMapper objectMapper;
 
+    public <T> T serialzeMessage(String messageStr,Class<T> tClass,String sourceQueue) {
+
+        try {
+            serialze(messageStr,tClass);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public <T> T serialze(String str,Class<T> tClass) throws IOException {
 
         return objectMapper.readValue(str,tClass);
